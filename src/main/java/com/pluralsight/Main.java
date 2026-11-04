@@ -1,5 +1,10 @@
 package com.pluralsight;
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -31,7 +36,7 @@ public class Main {
 
             switch (choice) {
                 case "D":
-                    System.out.println("Opening Add Deposit...");
+                    addDeposit(scanner);
                     break;
 
                 case "P":
@@ -55,6 +60,61 @@ public class Main {
         }
         System.out.println("Thank you for using SkyLedger!");
         scanner.close();
+
+    }
+
+    public static void addDeposit(Scanner scanner) {
+        System.out.println();
+        System.out.println("========== ADD DEPOSIT ==========");
+        System.out.println("Welcome to SkyLedger Deposit Services!");
+
+        System.out.print("Enter deposit description: ");
+        String description = scanner.nextLine();
+
+        System.out.print("Enter vendor or source: ");
+        String vendor = scanner.nextLine();
+
+        System.out.print("Enter deposit amount: $");
+        double amount = Double.parseDouble(scanner.nextLine());
+
+
+        while (amount <= 0) {
+            System.out.println("Invalid amount. Deposit must be greater than $0.");
+            System.out.print("Enter deposit amount: $");
+            amount = Double.parseDouble(scanner.nextLine());
+        }
+
+        LocalDate date = LocalDate.now();
+        System.out.println("Transaction Date: " + date);
+
+        LocalTime time = LocalTime.now();
+        System.out.println("Transaction Time: " + time);
+
+
+        Transaction transaction = new Transaction(
+                date,
+                time,
+                description,
+                vendor,
+                amount
+        );
+
+        try (FileWriter writer = new FileWriter("transactions.csv", true)) {
+            writer.write(date + "|" + time.withNano(0) + "|" +
+                    description + "|" + vendor + "|" + amount + "\n");
+
+            System.out.println();
+            System.out.println("Deposit saved successfully!");
+            System.out.printf("Amount: $%.2f%n", amount);
+
+        } catch (IOException e) {
+            System.out.println("Error saving transaction: " + e.getMessage());
+        }
+
+
+       // System.out.println("Transaction created: " + transaction.getDescription());
+
+
 
     }
 }
