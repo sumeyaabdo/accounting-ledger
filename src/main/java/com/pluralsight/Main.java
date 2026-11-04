@@ -40,7 +40,7 @@ public class Main {
                     break;
 
                 case "P":
-                    System.out.println("Opening Make Payment...");
+                    makePayment(scanner);
                     break;
 
                 case "L":
@@ -112,9 +112,69 @@ public class Main {
         }
 
 
-       // System.out.println("Transaction created: " + transaction.getDescription());
 
 
 
     }
+
+
+    public static void makePayment(Scanner scanner) {
+        System.out.println();
+        System.out.println("========== MAKE PAYMENT ==========");
+        System.out.println("Welcome to SkyLedger Payment Services!");
+
+
+        System.out.print("Enter payment description: ");
+        String description = scanner.nextLine();
+
+
+        System.out.print("Enter vendor receiving payment: ");
+        String vendor = scanner.nextLine();
+
+
+        System.out.print("Enter payment amount: $");
+        double amount = Double.parseDouble(scanner.nextLine());
+
+
+        while (amount <= 0) {
+            System.out.println("Invalid amount. Payment must be greater than $0.");
+            System.out.print("Enter payment amount: $");
+            amount = Double.parseDouble(scanner.nextLine());
+        }
+
+        amount = -amount;
+
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+
+        System.out.println("Transaction Date: " + date);
+        System.out.println("Transaction Time: " + time);
+
+
+        Transaction transaction = new Transaction(
+                date,
+                time,
+                description,
+                vendor,
+                amount
+        );
+
+
+        try (FileWriter writer = new FileWriter("transactions.csv", true)) {
+            writer.write(date + "|" + time.withNano(0) + "|" +
+                    description + "|" + vendor + "|" + amount + "\n");
+
+
+            System.out.println();
+            System.out.println("Payment saved successfully!");
+            System.out.printf("Amount Paid: $%.2f%n", -amount);
+
+        } catch (IOException e) {
+            System.out.println("Error saving payment: " + e.getMessage());
+        }
+
+
+
+    }
+
 }
