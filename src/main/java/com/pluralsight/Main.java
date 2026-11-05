@@ -291,10 +291,90 @@ public class Main {
 
                 case "D":
                     System.out.println("Opening Deposits...");
+                    ArrayList<Transaction> deposits = loadTransactions();
+
+
+                    boolean hasDeposits = false;
+
+                    for (Transaction transaction : deposits) {
+                        if (transaction.getAmount() > 0) {
+                            hasDeposits = true;
+                            break;
+                        }
+                    }
+
+                    if (!hasDeposits) {
+                        System.out.println("No deposits found.");
+                        break;
+                    }
+
+
+
+                    deposits.sort((t1, t2) -> {
+                        int dateCompare = t2.getDate().compareTo(t1.getDate());
+
+                        if (dateCompare != 0) {
+                            return dateCompare;
+                        }
+
+                        return t2.getTime().compareTo(t1.getTime());
+                    });
+
+
+                    for (Transaction transaction : deposits) {
+                        if (transaction.getAmount() > 0) {
+                            System.out.println(transaction.getDate() + " | " +
+                                    transaction.getTime() + " | " +
+                                    transaction.getDescription() + " | " +
+                                    transaction.getVendor() + " | " +
+                                    String.format("$%.2f", transaction.getAmount()));
+                        }
+                    }
+
                     break;
 
                 case "P":
                     System.out.println("Opening Payments...");
+                    ArrayList<Transaction> payments = loadTransactions();
+
+
+                    boolean hasPayments = false;
+
+                    for (Transaction transaction : payments) {
+                        if (transaction.getAmount() < 0) {
+                            hasPayments = true;
+                            break;
+                        }
+                    }
+
+                    if (!hasPayments) {
+                        System.out.println("No payments found.");
+                        break;
+                    }
+
+
+
+                    payments.sort((t1, t2) -> {
+                        int dateCompare = t2.getDate().compareTo(t1.getDate());
+
+                        if (dateCompare != 0) {
+                            return dateCompare;
+                        }
+
+                        return t2.getTime().compareTo(t1.getTime());
+                    });
+
+
+                    for (Transaction transaction : payments) {
+                        if (transaction.getAmount() < 0) {
+                            System.out.println(transaction.getDate() + " | " +
+                                    transaction.getTime() + " | " +
+                                    transaction.getDescription() + " | " +
+                                    transaction.getVendor() + " | " +
+                                    String.format("$%.2f", transaction.getAmount()));
+                        }
+                    }
+
                     break;
 
                 case "R":
