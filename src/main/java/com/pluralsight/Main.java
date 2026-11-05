@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.time.format.DateTimeParseException;
+import java.util.Comparator;
+
 
 
 public class Main {
@@ -414,19 +416,19 @@ public class Main {
 
             switch (choice) {
                 case "1":
-                    System.out.println("Opening Month To Date Report...");
+                    showMonthToDateReport();
                     break;
 
                 case "2":
-                    System.out.println("Opening Previous Month Report...");
+                    showPreviousMonthReport();
                     break;
 
                 case "3":
-                    System.out.println("Opening Year To Date Report...");
+                    showYearToDateReport();
                     break;
 
                 case "4":
-                    System.out.println("Opening Previous Year Report...");
+                    showPreviousYearReport();
                     break;
 
                 case "5":
@@ -443,4 +445,223 @@ public class Main {
 
         }
     }
+
+    public static void showMonthToDateReport() {
+        System.out.println();
+        System.out.println("========== MONTH TO DATE REPORT ==========");
+        System.out.println("SkyLedger Monthly Financial Activity");
+
+        LocalDate today = LocalDate.now();
+        LocalDate firstDayOfMonth = today.withDayOfMonth(1);
+
+
+
+        System.out.println("Start Date: " + firstDayOfMonth);
+        System.out.println("Today's Date: " + today);
+
+        ArrayList<Transaction> transactions = loadTransactions();
+        System.out.println("Transactions loaded for report: " + transactions.size());
+
+
+        ArrayList<Transaction> monthlyTransactions = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            LocalDate transactionDate = transaction.getDate();
+
+            if (!transactionDate.isBefore(firstDayOfMonth)
+                    && !transactionDate.isAfter(today)) {
+                monthlyTransactions.add(transaction);
+            }
+        }
+
+        System.out.println("Month To Date transactions: " + monthlyTransactions.size());
+
+        monthlyTransactions.sort(
+                Comparator.comparing(Transaction::getDate)
+                        .thenComparing(Transaction::getTime)
+                        .reversed()
+        );
+
+
+        if (monthlyTransactions.isEmpty()) {
+            System.out.println("No transactions found for this month.");
+        } else {
+            for (Transaction transaction : monthlyTransactions) {
+                System.out.printf("%s | %s | %s | %s | $%.2f%n",
+                        transaction.getDate(),
+                        transaction.getTime(),
+                        transaction.getDescription(),
+                        transaction.getVendor(),
+                        transaction.getAmount());
+            }
+        }
+
+    }
+
+    public static void showPreviousMonthReport() {
+        System.out.println();
+        System.out.println("========== PREVIOUS MONTH REPORT ==========");
+        System.out.println("SkyLedger Previous Month Financial Activity");
+
+        LocalDate today = LocalDate.now();
+        LocalDate firstDayOfPreviousMonth = today.minusMonths(1).withDayOfMonth(1);
+        LocalDate lastDayOfPreviousMonth = today.withDayOfMonth(1).minusDays(1);
+
+
+        System.out.println("Start Date: " + firstDayOfPreviousMonth);
+        System.out.println("End Date: " + lastDayOfPreviousMonth);
+
+        ArrayList<Transaction> transactions = loadTransactions();
+        System.out.println("Transactions loaded for report: " + transactions.size());
+
+        ArrayList<Transaction> previousMonthTransactions = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            LocalDate transactionDate = transaction.getDate();
+
+            if (!transactionDate.isBefore(firstDayOfPreviousMonth)
+                    && !transactionDate.isAfter(lastDayOfPreviousMonth)) {
+                previousMonthTransactions.add(transaction);
+            }
+        }
+
+        System.out.println("Previous Month transactions: " + previousMonthTransactions.size());
+
+        previousMonthTransactions.sort(
+                Comparator.comparing(Transaction::getDate)
+                        .thenComparing(Transaction::getTime)
+                        .reversed()
+        );
+
+        System.out.println("Previous Month transactions sorted newest first.");
+
+        if (previousMonthTransactions.isEmpty()) {
+            System.out.println("No transactions found for the previous month.");
+        } else {
+            for (Transaction transaction : previousMonthTransactions) {
+                System.out.printf("%s | %s | %s | %s | $%.2f%n",
+                        transaction.getDate(),
+                        transaction.getTime(),
+                        transaction.getDescription(),
+                        transaction.getVendor(),
+                        transaction.getAmount());
+            }
+        }
+
+
+    }
+
+    public static void showYearToDateReport() {
+        System.out.println();
+        System.out.println("========== YEAR TO DATE REPORT ==========");
+        System.out.println("SkyLedger Yearly Financial Activity");
+
+        LocalDate today = LocalDate.now();
+        LocalDate firstDayOfYear = today.withDayOfYear(1);
+
+
+
+        System.out.println("Start Date: " + firstDayOfYear);
+        System.out.println("Today's Date: " + today);
+
+        ArrayList<Transaction> transactions = loadTransactions();
+        System.out.println("Transactions loaded for report: " + transactions.size());
+
+        ArrayList<Transaction> yearToDateTransactions = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            LocalDate transactionDate = transaction.getDate();
+
+            if (!transactionDate.isBefore(firstDayOfYear)
+                    && !transactionDate.isAfter(today)) {
+                yearToDateTransactions.add(transaction);
+            }
+        }
+
+        System.out.println("Year To Date transactions: " + yearToDateTransactions.size());
+
+        yearToDateTransactions.sort(
+                Comparator.comparing(Transaction::getDate)
+                        .thenComparing(Transaction::getTime)
+                        .reversed()
+        );
+
+        System.out.println("Year To Date transactions sorted newest first.");
+
+        if (yearToDateTransactions.isEmpty()) {
+            System.out.println("No transactions found for this year.");
+        } else {
+            for (Transaction transaction : yearToDateTransactions) {
+                System.out.printf("%s | %s | %s | %s | $%.2f%n",
+                        transaction.getDate(),
+                        transaction.getTime(),
+                        transaction.getDescription(),
+                        transaction.getVendor(),
+                        transaction.getAmount());
+            }
+        }
+
+
+    }
+
+    public static void showPreviousYearReport() {
+        System.out.println();
+        System.out.println("========== PREVIOUS YEAR REPORT ==========");
+        System.out.println("SkyLedger Previous Year Financial Activity");
+
+
+        LocalDate today = LocalDate.now();
+
+        LocalDate firstDayOfPreviousYear = today.minusYears(1).withDayOfYear(1);
+        LocalDate lastDayOfPreviousYear = today.withDayOfYear(1).minusDays(1);
+
+        System.out.println("Start Date: " + firstDayOfPreviousYear);
+        System.out.println("End Date: " + lastDayOfPreviousYear);
+
+        ArrayList<Transaction> transactions = loadTransactions();
+        System.out.println("Transactions loaded for report: " + transactions.size());
+
+
+        ArrayList<Transaction> previousYearTransactions = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            LocalDate transactionDate = transaction.getDate();
+
+            if (!transactionDate.isBefore(firstDayOfPreviousYear)
+                    && !transactionDate.isAfter(lastDayOfPreviousYear)) {
+                previousYearTransactions.add(transaction);
+            }
+        }
+
+        System.out.println("Previous Year transactions: " + previousYearTransactions.size());
+
+
+        previousYearTransactions.sort(
+                Comparator.comparing(Transaction::getDate)
+                        .thenComparing(Transaction::getTime)
+                        .reversed()
+        );
+
+        System.out.println("Previous Year transactions sorted newest first.");
+
+
+        if (previousYearTransactions.isEmpty()) {
+            System.out.println("No transactions found for the previous year.");
+        } else {
+            for (Transaction transaction : previousYearTransactions) {
+                System.out.printf("%s | %s | %s | %s | $%.2f%n",
+                        transaction.getDate(),
+                        transaction.getTime(),
+                        transaction.getDescription(),
+                        transaction.getVendor(),
+                        transaction.getAmount());
+            }
+        }
+
+
+
+
+    }
+
+
 }
