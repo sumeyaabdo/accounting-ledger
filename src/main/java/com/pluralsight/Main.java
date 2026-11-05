@@ -52,7 +52,7 @@ public class Main {
                     break;
 
                 case "L":
-                    System.out.println("Opening Ledger...");
+                    showLedgerMenu(scanner);
                     break;
 
                 case "X":
@@ -237,5 +237,54 @@ public class Main {
     }
 
 
+    public static void showLedgerMenu(Scanner scanner) {
+        boolean running = true;
+
+        while (running) {
+
+            System.out.println();
+            System.out.println("========== LEDGER MENU ==========");
+            System.out.println("Welcome to SkyLedger Transaction History!");
+            System.out.println("A) All Transactions");
+            System.out.println("D) Deposits");
+            System.out.println("P) Payments");
+            System.out.println("R) Reports");
+            System.out.println("H) Home");
+
+            System.out.print("\nEnter your choice: ");
+            String choice = scanner.nextLine().trim().toUpperCase();
+
+            switch (choice) {
+                case "A":
+                    System.out.println("Opening All Transactions...");
+                    break;
+
+                case "D":
+                    System.out.println("Opening Deposits...");
+                    break;
+
+                case "P":
+                    System.out.println("Opening Payments...");
+                    break;
+
+                case "R":
+                    System.out.println("Opening Reports...");
+                    break;
+
+                case "H":
+                    System.out.println("Returning to Home Menu...");
+                    running = false;
+                    break;
+
+                default:
+                    System.out.println("Invalid choice! Please select A, D, P, R, or H.");
+                    break;
+
+
+            }
+
+
+        }
+    }
 
 }
