@@ -432,7 +432,7 @@ public class Main {
                     break;
 
                 case "5":
-                    System.out.println("Opening Search by Vendor...");
+                    searchByVendor(scanner);
                     break;
 
                 case "0":
@@ -657,11 +657,51 @@ public class Main {
                         transaction.getAmount());
             }
         }
+    }
+
+    public static void searchByVendor(Scanner scanner) {
+        System.out.println();
+        System.out.println("========== SEARCH BY VENDOR ==========");
+        System.out.println("SkyLedger Vendor Transaction Search");
+        System.out.print("Enter vendor name: ");
+        String vendorName = scanner.nextLine().trim();
 
 
+        ArrayList<Transaction> transactions = loadTransactions();
+        System.out.println("Transactions loaded for vendor search: " + transactions.size());
+
+        ArrayList<Transaction> matchingTransactions = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            if (transaction.getVendor().equalsIgnoreCase(vendorName)) {
+                matchingTransactions.add(transaction);
+            }
+        }
+
+        System.out.println("Matching vendor transactions: " + matchingTransactions.size());
+
+        matchingTransactions.sort(
+                Comparator.comparing(Transaction::getDate)
+                        .thenComparing(Transaction::getTime)
+                        .reversed()
+        );
+
+        System.out.println("Matching vendor transactions sorted newest first.");
+
+        if (matchingTransactions.isEmpty()) {
+            System.out.println("No transactions found for this vendor.");
+        } else {
+            for (Transaction transaction : matchingTransactions) {
+                System.out.printf("%s | %s | %s | %s | $%.2f%n",
+                        transaction.getDate(),
+                        transaction.getTime(),
+                        transaction.getDescription(),
+                        transaction.getVendor(),
+                        transaction.getAmount());
+            }
+        }
 
 
     }
-
 
 }
