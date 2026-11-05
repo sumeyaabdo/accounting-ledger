@@ -257,7 +257,37 @@ public class Main {
             switch (choice) {
                 case "A":
                     System.out.println("Opening All Transactions...");
+                    ArrayList<Transaction> transactions = loadTransactions();
+
+
+                    if (transactions.isEmpty()) {
+                        System.out.println("No transactions found.");
+                        break;
+                    }
+
+                    transactions.sort((t1, t2) -> {
+                        int dateCompare = t2.getDate().compareTo(t1.getDate());
+
+                        if (dateCompare != 0) {
+                            return dateCompare;
+                        }
+
+                        return t2.getTime().compareTo(t1.getTime());
+                    });
+
+
+
+                    for (Transaction transaction : transactions) {
+                        System.out.println(transaction.getDate() + " | " +
+                                transaction.getTime() + " | " +
+                                transaction.getDescription() + " | " +
+                                transaction.getVendor() + " | " +
+                                String.format("$%.2f", transaction.getAmount()));
+
+                    }
+
                     break;
+
 
                 case "D":
                     System.out.println("Opening Deposits...");
