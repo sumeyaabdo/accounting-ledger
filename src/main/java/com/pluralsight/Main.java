@@ -203,22 +203,22 @@ public class Main {
                 }
 
                 try {
-                LocalDate date = LocalDate.parse(parts[0]);
-                LocalTime time = LocalTime.parse(parts[1]);
-                String description = parts[2];
-                String vendor = parts[3];
-                double amount = Double.parseDouble(parts[4]);
+                    LocalDate date = LocalDate.parse(parts[0]);
+                    LocalTime time = LocalTime.parse(parts[1]);
+                    String description = parts[2];
+                    String vendor = parts[3];
+                    double amount = Double.parseDouble(parts[4]);
 
 
-                Transaction transaction = new Transaction(
-                        date,
-                        time,
-                        description,
-                        vendor,
-                        amount
-                );
+                    Transaction transaction = new Transaction(
+                            date,
+                            time,
+                            description,
+                            vendor,
+                            amount
+                    );
 
-                transactions.add(transaction);
+                    transactions.add(transaction);
 
                 } catch (DateTimeParseException | NumberFormatException e) {
                     System.out.println("Skipping invalid transaction data: " + line);
@@ -227,8 +227,7 @@ public class Main {
 
             }
 
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Error opening CSV file: " + e.getMessage());
         }
 
@@ -276,7 +275,6 @@ public class Main {
                     });
 
 
-
                     for (Transaction transaction : transactions) {
                         System.out.println(transaction.getDate() + " | " +
                                 transaction.getTime() + " | " +
@@ -307,7 +305,6 @@ public class Main {
                         System.out.println("No deposits found.");
                         break;
                     }
-
 
 
                     deposits.sort((t1, t2) -> {
@@ -353,7 +350,6 @@ public class Main {
                     }
 
 
-
                     payments.sort((t1, t2) -> {
                         int dateCompare = t2.getDate().compareTo(t1.getDate());
 
@@ -378,7 +374,7 @@ public class Main {
                     break;
 
                 case "R":
-                    System.out.println("Opening Reports...");
+                    showReportsMenu(scanner);
                     break;
 
                 case "H":
@@ -397,4 +393,54 @@ public class Main {
         }
     }
 
+
+    public static void showReportsMenu(Scanner scanner) {
+        String choice = "";
+
+        while (!choice.equals("0")) {
+            System.out.println();
+            System.out.println("========== REPORTS MENU ==========");
+            System.out.println("Welcome to SkyLedger Financial Reports!");
+            System.out.println("1) Month To Date");
+            System.out.println("2) Previous Month");
+            System.out.println("3) Year To Date");
+            System.out.println("4) Previous Year");
+            System.out.println("5) Search by Vendor");
+            System.out.println("0) Back");
+
+            System.out.print("\nEnter your choice: ");
+            choice = scanner.nextLine().trim();
+
+
+            switch (choice) {
+                case "1":
+                    System.out.println("Opening Month To Date Report...");
+                    break;
+
+                case "2":
+                    System.out.println("Opening Previous Month Report...");
+                    break;
+
+                case "3":
+                    System.out.println("Opening Year To Date Report...");
+                    break;
+
+                case "4":
+                    System.out.println("Opening Previous Year Report...");
+                    break;
+
+                case "5":
+                    System.out.println("Opening Search by Vendor...");
+                    break;
+
+                case "0":
+                    System.out.println("Returning to Ledger Menu...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+
+        }
+    }
 }
