@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.time.format.DateTimeParseException;
 import java.util.Comparator;
+import java.time.format.DateTimeParseException;
 
 
 
@@ -408,7 +409,9 @@ public class Main {
             System.out.println("3) Year To Date");
             System.out.println("4) Previous Year");
             System.out.println("5) Search by Vendor");
+            System.out.println("6) Custom Search");
             System.out.println("0) Back");
+
 
             System.out.print("\nEnter your choice: ");
             choice = scanner.nextLine().trim();
@@ -434,6 +437,11 @@ public class Main {
                 case "5":
                     searchByVendor(scanner);
                     break;
+
+                case "6":
+                    customSearch(scanner);
+                    break;
+
 
                 case "0":
                     System.out.println("Returning to Ledger Menu...");
@@ -703,5 +711,117 @@ public class Main {
 
 
     }
+
+    public static void customSearch(Scanner scanner) {
+        System.out.println();
+        System.out.println("========== CUSTOM SEARCH ==========");
+        System.out.println("SkyLedger Advanced Transaction Search");
+
+        System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
+        String startDateInput = scanner.nextLine().trim();
+
+        System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
+        String endDateInput = scanner.nextLine().trim();
+
+        System.out.print("Enter description or press Enter to skip: ");
+        String descriptionInput = scanner.nextLine().trim();
+
+        System.out.print("Enter vendor or press Enter to skip: ");
+        String vendorInput = scanner.nextLine().trim();
+
+        System.out.print("Enter amount or press Enter to skip: ");
+        String amountInput = scanner.nextLine().trim();
+
+        ArrayList<Transaction> transactions = loadTransactions();
+
+        System.out.println("Transactions available for search: " + transactions.size());
+
+
+        if (!startDateInput.isEmpty()) {
+            try {
+                LocalDate startDate = LocalDate.parse(startDateInput);
+
+                transactions.removeIf(transaction ->
+                        transaction.getDate().isBefore(startDate));
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid start date. Please use YYYY-MM-DD.");
+                return;
+            }
+        }
+
+
+        System.out.println("Transactions after start date filter: " + transactions.size());
+
+
+        if (!endDateInput.isEmpty()) {
+            try {
+                LocalDate endDate = LocalDate.parse(endDateInput);
+
+                transactions.removeIf(transaction ->
+                        transaction.getDate().isAfter(endDate));
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid end date. Please use YYYY-MM-DD.");
+                return;
+            }
+        }
+
+
+        System.out.println("Transactions after end date filter: " + transactions.size());
+
+        if (!descriptionInput.isEmpty()) {
+            transactions.removeIf(transaction ->
+                    !transaction.getDescription().toLowerCase()
+                            .contains(descriptionInput.toLowerCase()));
+        }
+
+        System.out.println("Transactions after description filter: " + transactions.size());
+
+        if (!vendorInput.isEmpty()) {
+            transactions.removeIf(transaction ->
+                    !transaction.getVendor().toLowerCase()
+                            .contains(vendorInput.toLowerCase()));
+        }
+
+        System.out.println("Transactions after vendor filter: " + transactions.size());
+
+
+        if (!amountInput.isEmpty()) {
+            try {
+                double amount = Double.parseDouble(amountInput);
+
+                transactions.removeIf(transaction ->
+                        Double.compare(transaction.getAmount(), amount) != 0);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid amount. Please enter a valid number.");
+                return;
+            }
+        }
+
+
+        System.out.println("Transactions after amount filter: " + transactions.size());
+
+        System.out.println();
+        System.out.println("========== SEARCH RESULTS ==========");
+
+        if (transactions.isEmpty()) {
+            System.out.println("No matching transactions found.");
+        } else {
+            transactions.sort(Comparator.comparing(Transaction::getDate)
+                    .thenComparing(Transaction::getTime).reversed());
+
+            for (Transaction transaction : transactions) {
+                System.out.printf("%s | %s | %s | %s | $%.2f%n",
+                        transaction.getDate(),
+                        transaction.getTime(),
+                        transaction.getDescription(),
+                        transaction.getVendor(),
+                        transaction.getAmount());
+            }
+        }
+
+
+
+    }
+
 
 }
