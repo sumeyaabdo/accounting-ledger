@@ -12,8 +12,14 @@ import java.util.Comparator;
 import java.time.format.DateTimeParseException;
 
 
-
 public class Main {
+    public static final String RESET = "\u001B[0m";
+    public static final String BURGUNDY = "\u001B[38;5;88m";
+    public static final String GOLD = "\u001B[38;5;220m";
+    public static final String WHITE = "\u001B[37m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String RED = "\u001B[31m";
+    public static final String BOLD = "\u001B[1m";
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -21,10 +27,10 @@ public class Main {
         System.out.println("Transactions available in Main: " + savedTransactions.size());
 
 
-        System.out.println("==================================");
-        System.out.println("           SKYLEDGER              ");
-        System.out.println("  Airline Financial Operations    ");
-        System.out.println("==================================");
+        System.out.println(GOLD + BOLD + "==================================" + RESET);
+        System.out.println(WHITE + BOLD + "           SKYLEDGER" + RESET);
+        System.out.println(GOLD + "  Airline Financial Operations" + RESET);
+        System.out.println(GOLD + BOLD + "==================================" + RESET);
         System.out.println("Welcome to SkyLedger!");
         System.out.println("Your Airport Financial Tracker");
 
@@ -34,11 +40,11 @@ public class Main {
         while (!choice.equals("X")) {
 
             System.out.println();
-            System.out.println("========== MAIN MENU ==========");
-            System.out.println("D) Add Deposit");
-            System.out.println("P) Make Payment");
-            System.out.println("L) Ledger");
-            System.out.println("X) Exit");
+            System.out.println(GOLD + BOLD + "\n========== MAIN MENU ==========" + RESET);
+            System.out.println(WHITE + "D) Add Deposit" + RESET);
+            System.out.println(WHITE + "P) Make Payment" + RESET);
+            System.out.println(WHITE + "L) Ledger" + RESET);
+            System.out.println(WHITE + "X) Exit" + RESET);
             System.out.println();
 
             System.out.print("Enter your choice: ");
@@ -76,7 +82,7 @@ public class Main {
 
     public static void addDeposit(Scanner scanner) {
         System.out.println();
-        System.out.println("========== ADD DEPOSIT ==========");
+        System.out.println(GOLD + BOLD + "\n========== ADD DEPOSIT ==========" + RESET);
         System.out.println("Welcome to SkyLedger Deposit Services!");
 
         System.out.print("Enter deposit description: ");
@@ -115,7 +121,7 @@ public class Main {
                     description + "|" + vendor + "|" + amount + "\n");
 
             System.out.println();
-            System.out.println("Deposit saved successfully!");
+            System.out.println(GREEN + BOLD + "✓ Deposit added successfully!" + RESET);
             System.out.printf("Amount: $%.2f%n", amount);
 
         } catch (IOException e) {
@@ -128,7 +134,7 @@ public class Main {
 
     public static void makePayment(Scanner scanner) {
         System.out.println();
-        System.out.println("========== MAKE PAYMENT ==========");
+        System.out.println(GOLD + BOLD + "\n========== MAKE PAYMENT ==========" + RESET);
         System.out.println("Welcome to SkyLedger Payment Services!");
 
 
@@ -174,7 +180,7 @@ public class Main {
 
 
             System.out.println();
-            System.out.println("Payment saved successfully!");
+            System.out.println(RED + BOLD + "✓ Payment added successfully!" + RESET);
             System.out.printf("Amount Paid: $%.2f%n", -amount);
 
         } catch (IOException e) {
@@ -245,13 +251,13 @@ public class Main {
         while (running) {
 
             System.out.println();
-            System.out.println("========== LEDGER MENU ==========");
+            System.out.println(GOLD + BOLD + "\n========== LEDGER MENU ==========" + RESET);
             System.out.println("Welcome to SkyLedger Transaction History!");
-            System.out.println("A) All Transactions");
-            System.out.println("D) Deposits");
-            System.out.println("P) Payments");
-            System.out.println("R) Reports");
-            System.out.println("H) Home");
+            System.out.println(WHITE + "A) All Transactions" + RESET);
+            System.out.println(WHITE + "D) Deposits" + RESET);
+            System.out.println(WHITE + "P) Payments" + RESET);
+            System.out.println(WHITE + "R) Reports" + RESET);
+            System.out.println(WHITE + "H) Home" + RESET);
 
             System.out.print("\nEnter your choice: ");
             String choice = scanner.nextLine().trim().toUpperCase();
@@ -402,15 +408,15 @@ public class Main {
 
         while (!choice.equals("0")) {
             System.out.println();
-            System.out.println("========== REPORTS MENU ==========");
+            System.out.println(GOLD + BOLD + "\n========== REPORTS MENU ==========" + RESET);
             System.out.println("Welcome to SkyLedger Financial Reports!");
-            System.out.println("1) Month To Date");
-            System.out.println("2) Previous Month");
-            System.out.println("3) Year To Date");
-            System.out.println("4) Previous Year");
-            System.out.println("5) Search by Vendor");
-            System.out.println("6) Custom Search");
-            System.out.println("0) Back");
+            System.out.println(WHITE + "1) Month To Date" + RESET);
+            System.out.println(WHITE + "2) Previous Month" + RESET);
+            System.out.println(WHITE + "3) Year To Date" + RESET);
+            System.out.println(WHITE + "4) Previous Year" + RESET);
+            System.out.println(WHITE + "5) Search by Vendor" + RESET);
+            System.out.println(WHITE + "6) Custom Search" + RESET);
+            System.out.println(WHITE + "0) Back" + RESET);
 
 
             System.out.print("\nEnter your choice: ");
