@@ -1,0 +1,13 @@
+date|time|description|vendor|amount
+2026-11-01|09:30:00|Extra Checked Baggage|Passenger Services|150.00
+2026-11-02|10:15:00|Paid Seat Change|Passenger Services|75.00
+2026-11-03|11:20:00|Business Class Upgrade|Passenger Services|1200.00
+2026-11-03|13:45:00|Lounge Access|Airport Lounge|100.00
+2026-11-04|08:30:00|Ground Equipment Repair|Maintenance Company|-350.00
+2026-11-04|11:04:42|Extra Checked Baggage|Passenger Services|150.0
+2026-11-04|11:11:46|Lounge Access|Airport Lounge|100.0
+2026-11-04|11:14:29|Business Class Upgrade|Passenger Services|500.0
+2026-11-04|11:19:12|Paid Seat Change|Passenger Services|75.0
+2026-11-04|12:13:18|Fuel Purchase|Airport Fuel Services|-250.0
+2026-11-04|12:18:40|Airport Cleaning|Cleaning Services|-120.0
+2026-11-04|12:22:45|Aircraft Maintenance|Maintenance Company|-200.0
